@@ -1,5 +1,6 @@
 /**
  * Created by Alex
+ * npm install weui react-weui --save
  */
 
 "use strict";
@@ -8,40 +9,125 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import { Router, Route, IndexRoute} from 'react-router';
-import WeUI from '../src/index';
+import WeUI from 'react-weui';
 import 'weui';
+import './page.less';
 
 const tab_list = {
     sale: ""
 }
 
+class Page extends React.Component {
+    render() {
+        const {title, subTitle, spacing, className, children} = this.props;
+
+        return (
+            <section className={`page ${className}`}>
+                <div className="hd">
+                    <h1 className="title">{title}</h1>
+                    <p className="sub_title">{subTitle}</p>
+                </div>
+                <div className={`bd ${spacing ? 'spacing' : ''}`}>
+                    {children}
+                </div>
+            </section>
+        );
+    }
+};
+
+class Home extends React.Component {
+    render() {
+        return (
+            <Page className="panel" title="首页">
+                <Panel access>
+                    <PanelHeader>
+                        操作
+                    </PanelHeader>
+                    <PanelBody>
+                        <MediaBox href="#sale">
+                            <MediaBoxBody>
+                                <MediaBoxTitle>销售</MediaBoxTitle>
+                                <MediaBoxDescription>
+                                    增加一笔销售。
+                                </MediaBoxDescription>
+                            </MediaBoxBody>
+                        </MediaBox>
+                        <MediaBox href="#storage">
+                            <MediaBoxBody>
+                                <MediaBoxTitle>库存</MediaBoxTitle>
+                                <MediaBoxDescription>
+                                    查看每种商品的库存状况。
+                                </MediaBoxDescription>
+                            </MediaBoxBody>
+                        </MediaBox>
+                        <MediaBox href="#buy">
+                            <MediaBoxBody>
+                                <MediaBoxTitle>进货</MediaBoxTitle>
+                                <MediaBoxDescription>
+                                    进货的时候使用。
+                                </MediaBoxDescription>
+                            </MediaBoxBody>
+                        </MediaBox>
+                        <MediaBox href="#stat">
+                            <MediaBoxBody>
+                                <MediaBoxTitle>统计</MediaBoxTitle>
+                                <MediaBoxDescription>
+                                    统计最近的销售业绩。
+                                </MediaBoxDescription>
+                            </MediaBoxBody>
+                        </MediaBox>
+                    </PanelBody>
+                    <PanelFooter href="javascript:void(0)">
+                        退出
+                    </PanelFooter>
+                </Panel>
+            </Page>
+        );
+    }
+}
+
 class Sale extends React.Component {
     render() {
-        <div></div>
+        return (
+            <Page className="" title="销售">
+            </Page>
+        )
     }
 }
 
 class Storage extends React.Component {
     render() {
-        <div></div>
+        return (
+            <Page className="" title="">
+            </Page>
+        )
     }
 }
 
 class Buy extends React.Component {
     render() {
-        <div></div>
+        return (
+            <Page className="" title="">
+            </Page>
+        )
     }
 }
 
 class Stat extends React.Component {
     render() {
-        <div></div>
+        return (
+            <Page className="" title="">
+            </Page>
+        )
     }
 }
 
 class Setting extends React.Component {
     render() {
-        <div></div>
+        return (
+            <Page className="" title="">
+            </Page>
+        )
     }
 }
 
@@ -61,21 +147,6 @@ class App extends React.Component {
                 transitionLeaveTimeout={500}
                 style={{height: '100%'}}
             >
-                <Tab>
-                    <NavBar>
-                        <NavBarItem active={this.state.tab == "sale"} onClick={e=>this.setState({tab:"sale"})}>销售</NavBarItem>
-                        <NavBarItem active={this.state.tab == "storage"} onClick={e=>this.setState({tab:"storage"})}>库存</NavBarItem>
-                        <NavBarItem active={this.state.tab == "buy"} onClick={e=>this.setState({tab:"buy"})}>进货</NavBarItem>
-                        <NavBarItem active={this.state.tab == "stat"} onClick={e=>this.setState({tab:"stat"})}>统计</NavBarItem>
-                        <NavBarItem active={this.state.tab == "setting"} onClick={e=>this.setState({tab:"setting"})}>设置</NavBarItem>
-                    </NavBar>
-                    <TabBody>
-                        {
-                            
-                        }
-                        <div style={{display: this.state.tab == "sale" ? null : 'none'}}></div>
-                    </TabBody>
-                </Tab>
                 {React.cloneElement(this.props.children, {
                     key: this.props.location.pathname
                 })}
@@ -87,7 +158,8 @@ class App extends React.Component {
 ReactDOM.render((
     <Router>
         <Route path="/" component={App}>
-            <IndexRoute component={Sale}/>
+            <IndexRoute component={Home}/>
+            <Route path="sale" component={Sale}/>
             <Route path="storage" component={Storage}/>
             <Route path="buy" component={Buy}/>
             <Route path="stat" component={Stat}/>
